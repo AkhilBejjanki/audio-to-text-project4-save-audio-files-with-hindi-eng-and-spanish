@@ -1,6 +1,7 @@
 import os, queue, json, sqlite3, time, threading, wave
 import sounddevice as sd
 import vosk
+from langdetect import detect
 
 # Paths to models
 MODEL_PATHS = {
@@ -57,6 +58,12 @@ def save_audio_chunk(raw_data, lang):
         wf.writeframes(raw_data)
     return filepath
 
+def detect_language_from_text(text):
+    try:
+        return detect(text)
+    except:
+        return "unknown"
+
 def audio_callback(indata, frames, time, status):
     if status:
         print("Audio status:", status, flush=True)
@@ -74,9 +81,10 @@ def transcribe_loop():
                     result = json.loads(rec.Result())
                     text = result.get("text", "").strip()
                     if text:
+                        detected_lang = detect_language_from_text(text)
                         audio_path = save_audio_chunk(data, lang)
-                        print(f"[{lang.upper()}] {text}  🎵 saved {audio_path}")
-                        save_transcript(text, lang, audio_path)
+                        print(f"[{lang.upper()}] Detected: {detected_lang} → {text}  🎵 saved {audio_path}")
+                        save_transcript(text, detected_lang, audio_path)
 
 def start_transcriber():
     t = threading.Thread(target=transcribe_loop, daemon=True)
