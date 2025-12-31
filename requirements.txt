@@ -2,6 +2,4 @@ flask==3.0.0
 sounddevice==0.4.6
 vosk==0.3.45
 langdetect==1.0.9
-google-cloud-translate==3.23.0
-langdetect==1.0.9
-googletrans==4.0.0rc1
+requests==2.31.0
