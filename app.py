@@ -61,6 +61,55 @@ def download_csv():
                     mimetype="text/csv",
                     headers={"Content-Disposition": "attachment;filename=transcripts.csv"})
 
+
+# unknown words 
+@app.route("/unknown")
+def get_unknown():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, word, language, timestamp 
+        FROM unknown_words 
+        ORDER BY id DESC
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+
+    return jsonify([
+        {
+            "id": r[0],
+            "word": r[1],
+            "language": r[2],
+            "timestamp": r[3]
+        } for r in rows
+    ])
+
+
+# learned words
+@app.route("/learned")
+def get_learned():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, word, detected_language, meaning, timestamp
+        FROM learned_words
+        ORDER BY id DESC
+        LIMIT 200
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+
+    return jsonify([
+        {
+            "id": r[0],
+            "word": r[1],
+            "language": r[2],
+            "meaning": r[3],
+            "timestamp": r[4]
+        } for r in rows
+    ])
+
+
 # 🔹 Serve audio files
 @app.route("/audio_clips/<path:filename>")
 def download_audio(filename):
