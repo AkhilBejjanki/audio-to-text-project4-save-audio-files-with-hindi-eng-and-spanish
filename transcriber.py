@@ -2,7 +2,6 @@ import os, queue, json, sqlite3, time, threading, wave
 import sounddevice as sd
 import vosk
 from langdetect import detect
-from google.cloud import translate_v2 as translate
 import requests
 
 # Paths to models
