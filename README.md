@@ -247,4 +247,3 @@ python app.py
 ### 🔴 No microphone
 Ensure permissions enabled on your system.
 
----
