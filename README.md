@@ -248,17 +248,3 @@ python app.py
 Ensure permissions enabled on your system.
 
 ---
-
-## 📝 License
-
-MIT License - Feel free to use this project for educational and commercial purposes.
-
----
-
-## 🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
----
-
-**Happy transcribing! 🎙️**
