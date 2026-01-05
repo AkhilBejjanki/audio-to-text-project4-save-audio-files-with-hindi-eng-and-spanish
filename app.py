@@ -109,6 +109,29 @@ def get_learned():
         } for r in rows
     ])
 
+@app.route("/generated")
+def get_generated():
+    conn = sqlite3.connect(DB_FILE)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT base_word, generated_word, generation_type, language, timestamp
+        FROM generated_words
+        ORDER BY id DESC
+        LIMIT 200
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+
+    return jsonify([
+        {
+            "base_word": r[0],
+            "generated_word": r[1],
+            "type": r[2],
+            "language": r[3],
+            "timestamp": r[4]
+        } for r in rows
+    ])
+
 
 # 🔹 Serve audio files
 @app.route("/audio_clips/<path:filename>")
