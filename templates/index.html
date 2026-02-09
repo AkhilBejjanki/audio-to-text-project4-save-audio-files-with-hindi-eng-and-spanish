@@ -110,6 +110,7 @@
 
         <button onclick="setView('transcripts')">🎙 Transcripts</button>
         <button onclick="setView('unknown')">❓ Unknown</button>
+        <button onclick="setView('offline')">📵 Offline</button>
         <button onclick="setView('learned')">📘 Learned</button>
         <button onclick="setView('generated')">🔁 Generated</button>
     </div>
@@ -129,6 +130,7 @@
         async function fetchData() {
             let url = "/data";
 
+            if (currentView === "offline") url = "/offline";
             if (currentView === "unknown") url = "/unknown";
             if (currentView === "learned") url = "/learned";
             if (currentView === "generated") url = "/generated";
@@ -147,6 +149,14 @@
             data.slice(0, pageSize).forEach(item => {
                 const div = document.createElement("div");
                 div.className = "entry";
+
+                if (currentView === "offline") {
+                    div.innerHTML = `
+                    <div><b>${item.word}</b> (${item.language})</div>
+                    <div class="timestamp">${item.timestamp}</div>
+                    ${item.confidence ? `<div>Confidence: ${(item.confidence * 100).toFixed(2)}%</div>` : ""}
+                `;
+                }
 
                 if (currentView === "transcripts") {
                     div.innerHTML = `
